@@ -92,15 +92,14 @@ li b{color:var(--paper)}
 .codewrap > .lbl{font:700 10.5px/1 "JetBrains Mono",monospace; letter-spacing:.13em; color:var(--dim2);
   text-transform:uppercase; display:block; margin-bottom:8px}
 pre{background:var(--ink2); border:1px solid var(--line); border-left:2px solid var(--red);
-  margin:0; padding:18px 20px; border-radius:3px; overflow-x:auto;
+  margin:0; padding:18px 20px 48px; border-radius:3px; overflow-x:auto;
   font-size:13px; line-height:1.75; color:var(--paper); white-space:pre}
 pre::-webkit-scrollbar{height:7px}
 pre::-webkit-scrollbar-thumb{background:var(--line); border-radius:4px}
-.copy{position:absolute; right:9px; bottom:9px; all:unset; cursor:pointer;
+.copy{all:unset; position:absolute; right:10px; bottom:10px; cursor:pointer;
   font:700 10.5px/1 "JetBrains Mono",monospace; letter-spacing:.1em; color:var(--dim2);
   background:var(--ink3); border:1px solid var(--line); padding:7px 11px; border-radius:3px}
 .copy:hover,.copy:focus-visible{color:var(--paper); border-color:var(--red); outline:none}
-.codewrap:has(.lbl) .copy{bottom:9px}
 
 .tablewrap{overflow-x:auto; margin:0 0 22px; border:1px solid var(--line); border-radius:3px}
 table{width:100%; border-collapse:collapse; font-size:14.5px; min-width:520px}
