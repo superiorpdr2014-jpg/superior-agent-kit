@@ -1,0 +1,705 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>卓越 AI Agent 起手包｜自己做一個記得你的 AI 助理</title>
+<meta name="description" content="不會寫程式也能做出自己的 AI 助理。從「關於我」開始，一路到 CLAUDE.md、安全三件套、工具串接、長期記憶，全部可複製貼上。">
+<meta property="og:title" content="卓越 AI Agent 起手包">
+<meta property="og:description" content="不會寫程式也能做出自己的 AI 助理。全部可複製貼上。">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+:root{
+  --ink:#0F0D0C; --ink2:#171312; --ink3:#211B19; --line:#302523;
+  --paper:#F2EDE8; --dim:#A0948D; --dim2:#786A63;
+  --red:#E23D46; --steel:#7FA3B4; --green:#6FAE7E; --amber:#D8A657;
+}
+:root[data-mode="light"]{
+  --ink:#FBF8F4; --ink2:#FFFFFF; --ink3:#F3ECE5; --line:#E0D5CC;
+  --paper:#181211; --dim:#6B5D56; --dim2:#8D7D75;
+  --red:#B4232F; --steel:#3D6274; --green:#3E7A50; --amber:#8A6519;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; scroll-padding-top:78px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{
+  margin:0; background:var(--ink); color:var(--paper);
+  font-family:"Noto Sans TC",system-ui,"Microsoft JhengHei",sans-serif;
+  font-size:16.5px; line-height:1.8; -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{font-family:"Noto Serif TC",Georgia,serif; font-weight:900; margin:0; text-wrap:balance; line-height:1.3}
+code,pre,.mono{font-family:"JetBrains Mono","Noto Sans TC",monospace}
+a{color:var(--steel); text-underline-offset:3px}
+a:hover{color:var(--red)}
+
+/* nav */
+nav{position:sticky; top:0; z-index:50; background:color-mix(in srgb,var(--ink) 92%,transparent);
+  backdrop-filter:blur(10px); border-bottom:1px solid var(--line)}
+.navin{max-width:1120px; margin:0 auto; padding:12px 22px; display:flex; align-items:center; gap:18px; flex-wrap:wrap}
+.brand{font:900 15px/1 "Noto Serif TC",serif; color:var(--paper); text-decoration:none; white-space:nowrap}
+.brand b{color:var(--red)}
+.navlinks{display:flex; gap:14px; flex-wrap:wrap; flex:1;
+  font:500 13px/1 "Noto Sans TC",sans-serif}
+.navlinks a{color:var(--dim); text-decoration:none; white-space:nowrap}
+.navlinks a:hover{color:var(--red)}
+#modeBtn{all:unset; cursor:pointer; font:700 11px/1 "JetBrains Mono",monospace; letter-spacing:.08em;
+  color:var(--dim2); border:1px solid var(--line); padding:6px 10px; border-radius:3px}
+#modeBtn:hover,#modeBtn:focus-visible{color:var(--paper); border-color:var(--red); outline:none}
+
+/* hero */
+header{max-width:1120px; margin:0 auto; padding:70px 22px 20px}
+.eyebrow{font:700 11.5px/1 "JetBrains Mono",monospace; letter-spacing:.22em; color:var(--red);
+  text-transform:uppercase; display:flex; align-items:center; gap:12px; margin-bottom:22px}
+.eyebrow s{display:block; width:32px; height:1px; background:var(--red); text-decoration:none}
+h1{font-size:clamp(34px,5.6vw,58px); letter-spacing:-.015em}
+h1 u{text-decoration:none; color:var(--red)}
+.lede{font-size:clamp(16px,2vw,19px); color:var(--dim); max-width:60ch; margin-top:24px; line-height:1.85}
+
+main{max-width:1120px; margin:0 auto; padding:0 22px 90px}
+section{padding-top:58px}
+section > h2{font-size:clamp(24px,3.4vw,33px); display:flex; align-items:baseline; gap:14px; flex-wrap:wrap}
+section > h2 i{font-style:normal; font:700 13px/1 "JetBrains Mono",monospace; color:var(--red); letter-spacing:.14em}
+.sub{color:var(--dim); margin:12px 0 26px; max-width:62ch}
+p{margin:0 0 16px; max-width:66ch}
+strong{color:var(--red); font-weight:700}
+hr{border:0; border-top:1px solid var(--line); margin:52px 0 0}
+
+.box{background:var(--ink2); border:1px solid var(--line); border-radius:3px; padding:22px 24px; margin:0 0 20px}
+.box h3{font-size:19px; margin-bottom:10px}
+.box p{margin-bottom:0; color:var(--dim)}
+.box p + p{margin-top:10px}
+.box.hot{border-left:3px solid var(--red)}
+.box.warn{border-left:3px solid var(--amber)}
+.box.ok{border-left:3px solid var(--green)}
+.box .tag{font:700 10.5px/1 "JetBrains Mono",monospace; letter-spacing:.14em; color:var(--red);
+  text-transform:uppercase; display:block; margin-bottom:10px}
+.box.warn .tag{color:var(--amber)}
+.box.ok .tag{color:var(--green)}
+
+ul,ol{margin:0 0 18px; padding-left:0; list-style:none; max-width:66ch}
+ul li{position:relative; padding-left:24px; margin-bottom:10px}
+ul li::before{content:""; position:absolute; left:0; top:14px; width:10px; height:1px; background:var(--red)}
+ol{counter-reset:n}
+ol li{position:relative; padding-left:32px; margin-bottom:10px; counter-increment:n}
+ol li::before{content:counter(n); position:absolute; left:0; top:1px;
+  font:700 12px/1.6 "JetBrains Mono",monospace; color:var(--red)}
+li b{color:var(--paper)}
+
+.codewrap{position:relative; margin:0 0 22px}
+.codewrap > .lbl{font:700 10.5px/1 "JetBrains Mono",monospace; letter-spacing:.13em; color:var(--dim2);
+  text-transform:uppercase; display:block; margin-bottom:8px}
+pre{background:var(--ink2); border:1px solid var(--line); border-left:2px solid var(--red);
+  margin:0; padding:18px 20px; border-radius:3px; overflow-x:auto;
+  font-size:13px; line-height:1.75; color:var(--paper); white-space:pre}
+pre::-webkit-scrollbar{height:7px}
+pre::-webkit-scrollbar-thumb{background:var(--line); border-radius:4px}
+.copy{position:absolute; right:9px; bottom:9px; all:unset; cursor:pointer;
+  font:700 10.5px/1 "JetBrains Mono",monospace; letter-spacing:.1em; color:var(--dim2);
+  background:var(--ink3); border:1px solid var(--line); padding:7px 11px; border-radius:3px}
+.copy:hover,.copy:focus-visible{color:var(--paper); border-color:var(--red); outline:none}
+.codewrap:has(.lbl) .copy{bottom:9px}
+
+.tablewrap{overflow-x:auto; margin:0 0 22px; border:1px solid var(--line); border-radius:3px}
+table{width:100%; border-collapse:collapse; font-size:14.5px; min-width:520px}
+th,td{text-align:left; padding:12px 14px; border-bottom:1px solid var(--line); vertical-align:top; line-height:1.65}
+tr:last-child td{border-bottom:0}
+th{font:700 10.5px/1 "JetBrains Mono",monospace; letter-spacing:.14em; color:var(--dim2);
+  text-transform:uppercase; background:var(--ink2)}
+td.k{font-weight:700; white-space:nowrap; color:var(--paper)}
+tr.hi td{background:color-mix(in srgb,var(--red) 8%,transparent)}
+tr.hi td.k{color:var(--red)}
+
+.grid{display:grid; gap:18px; grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.pill{display:inline-block; font:700 10px/1 "JetBrains Mono",monospace; letter-spacing:.1em;
+  padding:5px 9px; border-radius:2px; border:1px solid var(--line); color:var(--dim2); margin-right:6px}
+.pill.win{color:var(--steel); border-color:color-mix(in srgb,var(--steel) 45%,transparent)}
+.pill.mac{color:var(--green); border-color:color-mix(in srgb,var(--green) 45%,transparent)}
+
+footer{border-top:1px solid var(--line); margin-top:70px}
+.footin{max-width:1120px; margin:0 auto; padding:38px 22px 60px; color:var(--dim2); font-size:13.5px; line-height:1.9}
+.footin b{color:var(--paper)}
+</style>
+</head>
+<body>
+
+<nav><div class="navin">
+  <a class="brand" href="#top">卓越 <b>AI AGENT</b> 起手包</a>
+  <div class="navlinks">
+    <a href="#how">怎麼用</a>
+    <a href="#about">① 關於我</a>
+    <a href="#claudemd">② CLAUDE.md</a>
+    <a href="#safe">③ 安全三件套</a>
+    <a href="#tools">④ 給它工具</a>
+    <a href="#memory">⑤ 長期記憶</a>
+    <a href="#recipes">現成任務包</a>
+    <a href="#pitfalls">踩過的坑</a>
+  </div>
+  <button id="modeBtn">亮色</button>
+</div></nav>
+
+<header id="top">
+  <div class="eyebrow"><s></s>SUPERIOR PDR · 給協會成員與所有想開始的人</div>
+  <h1>自己做一個<u>記得你</u>的 AI 助理</h1>
+  <p class="lede">這頁上的每一段字，都可以直接複製貼上。<br>
+  我不是工程師，這些是我實際在用、也實際踩過坑之後留下來的設定。照著做，你今晚就會有一個知道你是誰、講話像你、而且真的會替你做事的助理。</p>
+</header>
+
+<main>
+
+<!-- ============ 怎麼用 ============ -->
+<section id="how">
+  <h2><i>00</i>這頁怎麼用</h2>
+  <p class="sub">兩種用法，選一種就好。</p>
+
+  <div class="grid">
+    <div class="box hot">
+      <span class="tag">懶人版 · 推薦</span>
+      <h3>把這頁的網址丟給你的 AI</h3>
+      <p>裝好 Claude Code 之後，直接複製下面這句貼進去，它會自己讀完這一頁，然後一步一步問你、帶你設定完。</p>
+    </div>
+    <div class="box">
+      <span class="tag">手動版</span>
+      <h3>照順序，一段一段複製</h3>
+      <p>從 ① 開始往下做。每個灰色框右下角都有「複製」鈕，貼到你的 AI 對話框或指定的檔案裡。</p>
+    </div>
+  </div>
+
+  <div class="codewrap">
+    <span class="lbl">貼進 Claude Code 就好</span>
+    <pre>請你打開這個網址並整份讀完：
+https://superiorpdr2014-jpg.github.io/superior-agent-kit/
+
+我完全不懂程式，請用白話跟我講。
+讀完後，請照這頁的順序一步一步帶我設定：
+先幫我寫「關於我」和 CLAUDE.md，
+再裝安全三件套，最後問我要接哪些工具。
+
+每一步都要先告訴我你要做什麼、等我說好再動手。
+改任何設定檔之前先備份，做完要驗證給我看。</pre>
+    <button class="copy">複製</button>
+  </div>
+
+  <div class="box warn">
+    <span class="tag">先確認</span>
+    <h3>你要先有 Claude Code</h3>
+    <p>還沒裝的話：到 <b>claude.ai</b> 或 <b>claude.com</b> 註冊（<b>網址自己打，不要點搜尋結果的廣告</b>，假網站非常多），升級到 Pro 方案（USD 20／月，先買最便宜的就夠），然後在終端機執行一行安裝指令。</p>
+    <p>Mac／Linux：<code>curl -fsSL https://claude.ai/install.sh | bash</code><br>
+       Windows（PowerShell）：<code>irm https://claude.ai/install.ps1 | iex</code></p>
+    <p>裝完打 <code>claude</code>，跳出歡迎畫面就成功了。有任何錯誤訊息，<b>截圖丟給 Claude 網頁版問它</b>，不要自己查。</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- ============ 關於我 ============ -->
+<section id="about">
+  <h2><i>01</i>第一步：先打一段「關於我」</h2>
+  <p class="sub">這是整件事最重要、也最多人跳過的一步。</p>
+
+  <p>開檔第一件事，不是設定，是<strong>用白話打一段自我介紹</strong>。不用管格式、不用管欄位——就當你在跟一個新來的助理介紹自己，你會講什麼，就打什麼。</p>
+
+  <div class="box hot">
+    <span class="tag">為什麼</span>
+    <h3>你不打，它就自己編一個</h3>
+    <p>沒有這段，AI 寫出來的東西全是那種「本公司秉持專業技術，致力於提供最優質的服務體驗」的官網話術——你一看就知道不是你。</p>
+    <p>這段<b>不用寫得漂亮，要寫得像你平常講話</b>。它學的是你的語氣，不是你的文筆。</p>
+  </div>
+
+  <div class="codewrap">
+    <span class="lbl">不知道怎麼開頭？照這個填</span>
+<pre>我叫（　），大家都叫我（　）。
+我在做（　），做了（　）年。
+（一句話講你當初怎麼開始的）
+
+我的組織是（　），規模／據點（　），
+現在最重要的三件事是（　）。
+
+我不是工程師。請用繁體中文跟我講話，
+語氣（　），不要（　）。
+我最在意的是（　）。</pre>
+    <button class="copy">複製</button>
+  </div>
+
+  <div class="codewrap">
+    <span class="lbl">我自己實際打進去的那一段（給你當參考）</span>
+<pre>我叫馬成傑，大家都叫我 Jay，也有人叫我小馬。
+我是 PDR 技師——免烤漆凹痕修復。
+2013 年去美國洛杉磯的 Superior Auto Institute 學這門技術，
+2014 年回台灣創業，那年 31 歲。
+
+現在經營「卓越凹痕修復中心 SUPERIOR PDR」，
+全台八家分店，分成維修、教育、工具三個部門，
+教學版圖到 13 個國家。
+
+我不是工程師，完全不懂程式。
+請用繁體中文跟我講話，語氣親近、口語、
+不要官腔，像朋友聊天就好。
+我講話的習慣是：先講痛點 → 再講我怎麼做 → 收金句。
+我相信真正的專業是「基礎＋熱忱」，技術與基礎只是門票。</pre>
+    <button class="copy">複製</button>
+  </div>
+</section>
+
+<hr>
+
+<!-- ============ CLAUDE.md ============ -->
+<section id="claudemd">
+  <h2><i>02</i>第二步：CLAUDE.md 完整範本</h2>
+  <p class="sub">存成 <code>CLAUDE.md</code>，放在你的專案資料夾最上層。每次開工它都會自動讀一遍。</p>
+
+  <p>把上一段「關於我」貼給 AI，跟它說「照這段幫我整理成 CLAUDE.md」，它就會生出下面這種東西。你也可以直接複製這份改。</p>
+
+  <div class="box warn">
+    <span class="tag">開檔前</span>
+    <h3>先開一個專案資料夾，不要在系統最上層開</h3>
+    <p>建一個資料夾當它的「辦公室」，例如 <code>協會_Agent</code>，把相關檔案丟進去（合約、報價單、會員名冊、活動照片、逐字稿、Logo）。它讀得到才幫得上忙。</p>
+    <p><b>不要在「使用者」或 C 槽最上層啟動</b>——它會把整台電腦當工作區。不同的事開不同資料夾，記憶才不會打架。</p>
+  </div>
+
+  <div class="codewrap">
+    <span class="lbl">CLAUDE.md · 把（　）換成你自己的</span>
+<pre># CLAUDE.md — （你的專案名）
+
+## 身份設定
+- 你是「（AI 的名字）」，（你的名字）的 AI 助理與分身。
+- 本專案是（公司／協會名）的（用途，例如：營運管理系統）。
+
+## 使用者資訊
+- 慣用稱呼：（你希望它怎麼叫你）
+- 職業／角色：（例如：PDR 技師、協會理事、自營工作者）
+- 組織：（名稱、成立年份、規模、據點）
+- 正在進行的事：（列 3-5 件，讓它知道輕重緩急）
+
+## 語言與溝通風格
+- 一律使用繁體中文，除非我指定其他語言。
+- 語氣親近、口語、不制式、不官方——像朋友聊天。
+- 少用「旨在」「總的來說」這類生硬詞彙，也不要一直重複同樣的句型。
+- 中文遇到英文或數字時，前後加一個半形空格。例如：我有 3 台 iPhone。
+  專有名詞保留原文，例如 Google Search Console、Notion、OpenAI。
+- 回覆直接給完整內容，不要問東問西才動手。
+
+## 我的立場與慣用語（讓它像我）
+- 核心信念：（用你自己的原話寫，不要寫官網那套）
+- 口頭禪／金句：（例如：「技術不會說謊」「做給你看」）
+- 敘事習慣：先講痛點 → 再講我怎麼做 → 最後收一句金句。
+
+## 協作方式
+- 我不是工程師。請用白話文和比喻解釋，減少不必要的技術術語。
+- 執行重要或不可逆的動作前，先輸出簡要計劃，等我確認再做。
+- 如果你信心不足，或你有更好的做法，直接講出來，不要順著我。
+  需要資訊就問我，不要自己猜。
+- 永遠使用台北時間（Asia/Taipei, UTC+8）。日期計算、時間戳記、
+  檔案命名之前，先用 date 確認今天幾號。
+
+## 行為規範
+- 所有任務在（你的資料夾路徑）底下執行。
+- 回應簡潔，不加多餘說明。
+- 不主動加入我沒要求的功能，不擅自重構既有的東西。
+- 破壞性操作（刪除、覆蓋、對外發送）前必須先問我。
+- 刪檔一律用 trash（丟資源回收筒），不要用 rm。
+
+## 禁區
+- （絕對不能動的檔案或資料夾）
+- （一定要先經我同意的動作：寄信、發文、上線、付款）
+- 帳號密碼、API 金鑰只放本機設定，絕對不要寫進會上傳的檔案或聊天訊息。
+
+## 相關連結
+- （你的網站／粉專／表單／試算表網址）</pre>
+    <button class="copy">複製</button>
+  </div>
+
+  <div class="box ok">
+    <span class="tag">驗收</span>
+    <h3>怎麼知道它真的記住了</h3>
+    <p>存檔，把對話關掉重開，問它：<b>「你知道我是誰嗎？我們在做什麼？」</b>——答得出來就成功了。<br>
+    再叫它「用我的口氣寫一段活動公告」，如果讀起來像你，這一步就過了。</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- ============ 安全三件套 ============ -->
+<section id="safe">
+  <h2><i>03</i>第三步：安全三件套</h2>
+  <p class="sub">誤刪一次就知道值不值得。十分鐘，做完可以放心把速度開到最大。</p>
+
+  <p>三層，缺一不可：<strong>① 刪除進資源回收筒 ② 最危險的指令直接封鎖 ③ 選對權限模式</strong>。裝了第一層不代表安全，因為 AI 可能選到別的刪除方式，所以第二層一定要有。</p>
+
+  <h3 style="font-size:20px; margin:34px 0 12px">3-1 · 讓「刪除」變成可以反悔</h3>
+  <p>裝一個小工具，讓刪掉的檔案進資源回收筒，而不是直接消失。</p>
+
+  <div class="codewrap">
+    <span class="lbl"><span class="pill win">Windows</span> PowerShell 或終端機執行</span>
+<pre>npm install -g trash-cli</pre>
+    <button class="copy">複製</button>
+  </div>
+
+  <div class="codewrap">
+    <span class="lbl"><span class="pill mac">macOS</span> 有 Homebrew 的話</span>
+<pre>brew install trash</pre>
+    <button class="copy">複製</button>
+  </div>
+
+  <p>裝完之後，這條規則要寫進你的 <code>CLAUDE.md</code>（上面的範本裡已經有了）：</p>
+
+  <div class="codewrap">
+    <span class="lbl">加進 CLAUDE.md 的行為規範</span>
+<pre>- 刪除檔案一律優先用 trash（丟資源回收筒，可還原），不要用 rm。
+- 真的需要永久刪除時，先列出要刪的目標清單並取得我確認，才執行。</pre>
+    <button class="copy">複製</button>
+  </div>
+
+  <h3 style="font-size:20px; margin:34px 0 12px">3-2 · 危險指令黑名單</h3>
+  <p>這一層是真正的煞車。把「出事就救不回來」的那些指令永久封鎖——<strong>黑名單的優先權高於任何權限模式</strong>，就算你開全速，這些還是會被擋下來。</p>
+
+  <div class="box warn">
+    <span class="tag">檔案位置</span>
+    <p><b>Windows：</b><code>C:\Users\你的使用者名稱\.claude\settings.json</code><br>
+       <b>macOS／Linux：</b><code>~/.claude/settings.json</code></p>
+    <p>如果這個檔案已經存在且裡面有東西，<b>不要整份覆蓋</b>——把 <code>deny</code> 這段合併進去就好。不確定怎麼合併，就把整段貼給 AI，叫它「幫我合併進現有設定，改之前先備份」。</p>
+  </div>
+
+  <div class="codewrap">
+    <span class="lbl">settings.json · 我自己在用的這一份</span>
+<pre>{
+  "permissions": {
+    "defaultMode": "bypassPermissions",
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(rm -fr *)",
+      "Bash(rm -r *)",
+      "Bash(rm -R *)",
+      "Bash(rm -f *)",
+      "Bash(sudo *)",
+      "Bash(dd *)",
+      "Bash(mkfs*)",
+      "Bash(diskutil erase*)",
+      "Bash(chmod 777 *)",
+      "Bash(chmod -R 777 *)",
+      "Bash(git reset --hard*)",
+      "Bash(git push --force*)",
+      "Bash(git push -f *)",
+      "Bash(git clean -f*)",
+      "Bash(git branch -D*)",
+      "Bash(shutdown*)",
+      "Bash(reboot*)",
+      "Bash(: >*)",
+      "Bash(truncate *)"
+    ]
+  }
+}</pre>
+    <button class="copy">複製</button>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>被擋的指令</th><th>它會幹什麼</th></tr></thead>
+      <tbody>
+        <tr><td class="k">rm -rf</td><td>一秒刪光整個資料夾，不進資源回收筒，救不回來</td></tr>
+        <tr><td class="k">sudo</td><td>用最高權限做事，可以動到系統檔</td></tr>
+        <tr><td class="k">git reset --hard<br>git push --force</td><td>抹掉你的工作紀錄，或把別人的版本蓋掉</td></tr>
+        <tr><td class="k">dd / mkfs<br>diskutil erase</td><td>直接寫硬碟、格式化磁碟</td></tr>
+        <tr><td class="k">shutdown / reboot</td><td>把你的電腦關掉或重開</td></tr>
+        <tr><td class="k">chmod 777</td><td>把檔案權限全開，等於門戶大開</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-size:20px; margin:34px 0 12px">3-3 · 選一個權限模式</h3>
+  <p>權限模式決定「它動手前會不會先問你」。四種，用終端機裡的 <code>Shift + Tab</code> 循環切換。</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>模式</th><th>白話說明</th><th>會問你嗎</th><th>適合誰</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Default</td><td>每個動作都先問過你</td><td>每次都問</td><td>剛入門，還想看它在幹嘛</td></tr>
+        <tr><td class="k">Plan</td><td>只規劃不動手，你確認後才執行</td><td>你主動觸發</td><td>大工程，想先看全貌</td></tr>
+        <tr><td class="k">Accept&nbsp;Edits</td><td>改檔案不問，跑指令還是會問</td><td>部分問</td><td><b>新手建議從這個開始</b></td></tr>
+        <tr class="hi"><td class="k">Bypass</td><td>什麼都不攔，全部直接執行</td><td>完全不問</td><td>我用這個，但一定要先做完 3-1、3-2</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="box hot">
+    <span class="tag">我的看法</span>
+    <h3>為什麼我開 Bypass</h3>
+    <p>做一份簡報要建二十個檔案、跑三十個指令。每一個都跳出來問「要不要執行？」，你會一直按 Enter 按到麻木，而且根本沒在看。</p>
+    <p><b>按到麻木的確認，等於沒有確認——那是假的安全感。</b>真正的安全是那份黑名單。所以順序很重要：先架好煞車，再踩油門。</p>
+  </div>
+
+  <div class="box ok">
+    <span class="tag">驗收</span>
+    <p>叫你的 AI：<b>「幫我確認 settings.json 的 deny 清單已經生效，用一個一定會被擋下來的假指令示範給我看，不要真的刪任何東西。」</b></p>
+  </div>
+</section>
+
+<hr>
+
+<!-- ============ 工具 ============ -->
+<section id="tools">
+  <h2><i>04</i>第四步：給它長出手腳</h2>
+  <p class="sub">大腦再強，碰不到你的東西也沒用。這一段是讓它真的能動手。</p>
+
+  <p>有四條路可以讓 AI 操作你的軟體。你不需要背，只要知道有這四條，然後問它「這件事該走哪一條」。</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>方式</th><th>是什麼</th><th>什麼時候用</th></tr></thead>
+      <tbody>
+        <tr><td class="k">API</td><td>軟體官方開的後門，最快最穩</td><td>對方有提供，而且你要大量／自動處理</td></tr>
+        <tr><td class="k">CLI</td><td>指令列工具，AI 用起來最順手</td><td>檔案處理、影音轉檔、語音轉文字、上傳網站</td></tr>
+        <tr class="hi"><td class="k">MCP</td><td>專門給 AI 用的標準插座</td><td>你要它「常態性」使用某個服務</td></tr>
+        <tr><td class="k">瀏覽器控制</td><td>直接操作網頁，像人一樣點</td><td>沒 API、要登入、畫面才看得到的資料</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><strong>判斷原則：有 API 走 API，沒有就走 CLI，要常用就包成 MCP，都不行才用瀏覽器硬爬。</strong></p>
+
+  <div class="box warn">
+    <span class="tag">安全提醒 · 很重要</span>
+    <h3>每接一個工具，就是多交一把鑰匙</h3>
+    <p>MCP 會把外部服務的資料和操作權交給 AI。<b>第一次一律開最小範圍，能只讀就先只讀</b>；等到真的需要建立、修改、寄送的時候，再逐項加上去。</p>
+    <p>API Key 和密碼只放在本機設定或環境變數，<b>絕對不要寫進會上傳的檔案、Markdown 或聊天訊息裡</b>。</p>
+  </div>
+
+  <h3 style="font-size:20px; margin:34px 0 12px">我實際在用的三個</h3>
+
+  <div class="codewrap">
+    <span class="lbl">① Playwright · 操作瀏覽器（爬社群、抓後台資料、自動截圖）</span>
+<pre>claude mcp add --scope user playwright -- npx @playwright/mcp@latest --isolated</pre>
+    <button class="copy">複製</button>
+  </div>
+  <p style="color:var(--dim); font-size:15px; margin-top:-10px">Instagram、Facebook 這類要登入、畫面又是動態長出來的網站，只能走這條。<code>--isolated</code> 是讓它用獨立的瀏覽器，不要接管你平常已登入私人帳號的那個。</p>
+
+  <div class="codewrap">
+    <span class="lbl">② Firecrawl · 把網頁變成 AI 讀得懂的文字（要先去官網申請免費 API Key）</span>
+<pre>claude mcp add --scope user firecrawl \
+  --env FIRECRAWL_API_KEY=你自己的KEY \
+  -- npx -y firecrawl-mcp</pre>
+    <button class="copy">複製</button>
+  </div>
+  <p style="color:var(--dim); font-size:15px; margin-top:-10px">用來讀公開網頁、整理文章、比較產品頁。到 firecrawl.dev 免費註冊拿 Key，<b>Key 是你自己的，不要放進公開專案</b>。</p>
+
+  <div class="codewrap">
+    <span class="lbl">③ Filesystem · 讓它讀寫指定的其他資料夾</span>
+<pre>claude mcp add --scope user filesystem -- \
+  npx -y @modelcontextprotocol/server-filesystem 你要開放的資料夾絕對路徑</pre>
+    <button class="copy">複製</button>
+  </div>
+  <p style="color:var(--dim); font-size:15px; margin-top:-10px">新手<b>先開一個資料夾就好</b>，不要一開始就把整個桌面、下載、文件全部開放。</p>
+
+  <div class="codewrap">
+    <span class="lbl">看看目前裝了哪些</span>
+<pre>claude mcp list</pre>
+    <button class="copy">複製</button>
+  </div>
+
+  <h3 style="font-size:20px; margin:34px 0 12px">進階：接你自己的 Google 帳號</h3>
+  <p>Gmail、Google 日曆、雲端硬碟、試算表——這些要授權，步驟比較多。最簡單的做法是不要自己查，直接把需求講給它聽：</p>
+
+  <div class="codewrap">
+    <span class="lbl">貼給你的 AI</span>
+<pre>我想讓你能讀我的 Gmail、Google 日曆和雲端硬碟。
+請一步一步教我怎麼授權給你，每一步都告訴我要點哪裡、
+畫面上會看到什麼。
+
+先只開「唯讀」權限就好，等我確定沒問題再說。
+過程中需要我提供什麼，直接問我，不要自己猜。</pre>
+    <button class="copy">複製</button>
+  </div>
+
+  <div class="box ok">
+    <span class="tag">驗收</span>
+    <p>每裝完一個工具，用<b>不會改動任何資料的方式</b>驗證：叫它讀一個公開網頁回報標題、或列出資料夾第一層的檔名。<b>不要為了測試就寄信、刪檔或建立行程。</b></p>
+  </div>
+</section>
+
+<hr>
+
+<!-- ============ 記憶 ============ -->
+<section id="memory">
+  <h2><i>05</i>第五步：讓它記得住</h2>
+  <p class="sub">CLAUDE.md 記的是「你是誰」，這一層記的是「發生過什麼」。</p>
+
+  <p>AI 最大的問題是失憶。你這禮拜糾正過它的事，下禮拜它又犯一次。解法是<strong>把每一次糾正都變成一個檔案</strong>——一件事一個檔，另外用一份 <code>MEMORY.md</code> 當目錄，一行一條。</p>
+
+  <div class="codewrap">
+    <span class="lbl">先貼這句，讓它學會自己記</span>
+<pre>從現在開始，只要發生以下任何一種情況，
+請你主動把它寫成一個記憶檔存起來，
+並在 MEMORY.md 加一行索引，不用等我叫你：
+
+1. 我糾正你「不對，我們這邊是這樣」
+2. 你踩到一個坑，花了時間才解決
+3. 我告訴你一件關於我們組織的事實
+4. 我們一起做了一個決定
+
+記憶檔請用這個格式：
+---
+name: 短的英文檔名
+description: 一句話說明這條在講什麼
+metadata:
+  type: user | feedback | project | reference
+---
+（內容本體，寫清楚 Why 和 How to apply）
+
+寫完念一遍給我聽，我確認過再存。</pre>
+    <button class="copy">複製</button>
+  </div>
+
+  <div class="codewrap">
+    <span class="lbl">記憶檔長這樣（我的真實例子，內容改過）</span>
+<pre>---
+name: event-signup-sheet-append
+description: 活動報名資料一律用累加，不可覆寫舊資料
+metadata:
+  type: feedback
+---
+
+活動報名的試算表，每個月一個分頁。
+新資料要「加在下面」，不是把整欄蓋掉。
+
+**Why:** 曾經直接覆寫，把上半個月的 40 筆報名洗掉，
+       只能從信箱一封一封找回來。
+**How to apply:** 寫試算表之前，先讀出現有的最後一列，
+       從下一列開始寫。寫完回報一共新增幾筆。</pre>
+    <button class="copy">複製</button>
+  </div>
+
+  <div class="box hot">
+    <span class="tag">關鍵心法</span>
+    <h3>越用越像你，靠的就是這個迴路</h3>
+    <p>每次它做錯、或你講了一句「不對，我們這邊是這樣」，就叫它把這條寫成記憶。<b>三個月後，它會比新來的員工還懂你們組織。</b></p>
+    <p>我現在累積了八十幾條，從「某某分店的通知帳號壞了」到「我的名字常被打錯成哪個字」都在裡面。</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- ============ 現成任務包 ============ -->
+<section id="recipes">
+  <h2><i>06</i>現成任務包</h2>
+  <p class="sub">設定完不知道先做什麼？從這三個開始，都是三十分鐘內看得到成果的。</p>
+
+  <div class="codewrap">
+    <span class="lbl">任務一 · 例會錄音 → 會議紀錄（投報率最高）</span>
+<pre>我把（會議名稱）的錄音檔放在這個資料夾了。
+
+請你：
+1. 轉成逐字稿，標上時間軸和講話的人
+2. 整理成一份會議紀錄，分成「決議事項」「待辦事項」
+   「下次追蹤」三段，待辦要標出負責人和期限
+3. 決議事項用紅字標出來
+4. 輸出成一份可以直接寄出去的檔案
+
+不確定誰在講話的地方，先標「（待確認）」不要亂猜。</pre>
+    <button class="copy">複製</button>
+  </div>
+
+  <div class="codewrap">
+    <span class="lbl">任務二 · 報名名單一條龍</span>
+<pre>我們（活動名稱）的報名資料在（Google 表單／試算表網址）。
+
+請你：
+1. 讀出目前所有報名資料，告訴我幾筆、有沒有重複或缺漏
+2. 依（分組條件）幫我分組，整理成一張出席表
+3. 幫我擬一封通知信，用我的口氣寫，親近一點不要制式
+
+信先寫給我看，我確認過再說要不要寄。
+在我明確說「可以寄了」之前，絕對不要真的寄出去。</pre>
+    <button class="copy">複製</button>
+  </div>
+
+  <div class="codewrap">
+    <span class="lbl">任務三 · 一段訪談 → 一整套內容</span>
+<pre>這是（受訪者）的訪談錄音／逐字稿。
+
+請幫我做出這四樣，全部用我的口氣：
+1. 一篇 800 字左右的故事文章
+2. 三則社群貼文（一則短鉤子、一則長文說故事、一則走心的）
+3. 一段 60 秒短影片的口白稿
+4. 上面文章的英文版
+
+寫之前先告訴我你抓到的三個重點，我確認方向再往下寫。</pre>
+    <button class="copy">複製</button>
+  </div>
+</section>
+
+<hr>
+
+<!-- ============ 踩坑 ============ -->
+<section id="pitfalls">
+  <h2><i>07</i>我踩過的坑</h2>
+  <p class="sub">每一條後面都有一次真實的損失。學結論就好，不用學過程。</p>
+
+  <ul>
+    <li><b>絕對不要用正式資料做測試。</b>我測「權限夠不夠」的時候換成有權限的帳號重跑，結果真的寄出六封信、真的把課程下架了。要測就用假資料，或用一個不存在的編號。</li>
+    <li><b>AI 的判斷不能直接對外承諾。</b>它說「這個看起來可以修復」，客人到店發現要烤漆，當場翻臉。現在的規則是：AI 判讀給內部參考，對外一律「需要現場評估」。<b>技術可以很強，但承諾要由人來做。</b></li>
+    <li><b>不要一次要它做完。</b>「幫我做一整套系統」會得到一坨爛東西。一次一個功能，做完測試，再下一個。</li>
+    <li><b>它會忘記，所以要逼它寫下來。</b>同一個坑我踩過三次，因為前兩次沒叫它寫記憶檔。</li>
+    <li><b>上線後才是開始。</b>做給別人用的東西，一定會出現你在辦公室測不出來的狀況。留時間修，不要做完就當結案。</li>
+    <li><b>別人的設定包不要照抄。</b>網路上很多現成的技能包，裝下去等於讓 AI 照著陌生人寫的指令做事。先叫它「幫我看一下這個是什麼、適合我們嗎」，再決定裝不裝。</li>
+    <li><b>金鑰和密碼要藏好。</b>很容易不小心把帳號密碼寫進檔案裡上傳出去。定期叫它「幫我檢查這個資料夾裡有沒有不該外流的密碼或金鑰」。</li>
+    <li><b>先承認做不到的事。</b>有些限制是技術上真的解不掉的。承認限制，才能把做得到的部分做到最好。</li>
+  </ul>
+
+  <div class="box hot" style="margin-top:32px">
+    <span class="tag">最後一件事</span>
+    <h3>門檻不是技術，是願意在一開始暫時變笨</h3>
+    <p>前兩個禮拜你會覺得自己很蠢，一直問問題、一直做壞。大部分人在這裡放棄，回去用原本的方法。</p>
+    <p>撐過去，之後每一天都在複利。<b>給你一張地圖，路還是要你自己走。</b></p>
+  </div>
+</section>
+
+</main>
+
+<footer><div class="footin">
+  <b>卓越 AI Agent 起手包</b>　·　馬成傑 Jay ｜ 卓越凹痕修復中心 SUPERIOR PDR<br>
+  這頁的內容來自我自己實際的設定與踩坑紀錄，歡迎自由複製取用、改成你自己的。<br>
+  <span style="color:var(--dim2)">相關網站：<a href="https://www.tar-tw.com">tar-tw.com</a> ·
+  <a href="https://oldcarnewlife.org.tw">oldcarnewlife.org.tw</a> ·
+  <a href="https://github.com/superiorpdr2014-jpg">github.com/superiorpdr2014-jpg</a></span>
+</div></footer>
+
+<script>
+(function(){
+  var btn=document.getElementById('modeBtn');
+  function apply(m){
+    document.documentElement.setAttribute('data-mode',m);
+    btn.textContent=(m==='light')?'暗色':'亮色';
+    try{localStorage.setItem('sak_mode',m);}catch(e){}
+  }
+  var saved='dark';
+  try{saved=localStorage.getItem('sak_mode')||'dark';}catch(e){}
+  apply(saved);
+  btn.addEventListener('click',function(){
+    apply(document.documentElement.getAttribute('data-mode')==='light'?'dark':'light');
+  });
+
+  document.querySelectorAll('.codewrap').forEach(function(w){
+    var b=w.querySelector('.copy'), pre=w.querySelector('pre');
+    if(!b||!pre) return;
+    b.addEventListener('click',function(){
+      var txt=pre.innerText;
+      var ok=function(){ b.textContent='已複製 ✓'; setTimeout(function(){b.textContent='複製';},1500); };
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(txt).then(ok,fb);
+      } else fb();
+      function fb(){
+        try{
+          var t=document.createElement('textarea');
+          t.value=txt; t.style.position='fixed'; t.style.opacity='0';
+          document.body.appendChild(t); t.select();
+          document.execCommand('copy'); document.body.removeChild(t); ok();
+        }catch(e){ b.textContent='請手動選取'; }
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
