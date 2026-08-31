@@ -128,11 +128,12 @@ footer{border-top:1px solid var(--line); margin-top:70px}
   <a class="brand" href="#top">卓越 <b>AI AGENT</b> 起手包</a>
   <div class="navlinks">
     <a href="#how">怎麼用</a>
-    <a href="#about">① 關於我</a>
-    <a href="#claudemd">② CLAUDE.md</a>
-    <a href="#safe">③ 安全三件套</a>
-    <a href="#tools">④ 給它工具</a>
-    <a href="#memory">⑤ 長期記憶</a>
+    <a href="#terminal">① 打開終端機</a>
+    <a href="#about">② 關於我</a>
+    <a href="#claudemd">③ CLAUDE.md</a>
+    <a href="#safe">④ 安全三件套</a>
+    <a href="#tools">⑤ 給它工具</a>
+    <a href="#memory">⑥ 長期記憶</a>
     <a href="#recipes">現成任務包</a>
     <a href="#faq">常見問題</a>
     <a href="#pitfalls">踩過的坑</a>
@@ -220,9 +221,82 @@ https://superiorpdr2014-jpg.github.io/superior-agent-kit/
 
 <hr>
 
+<!-- ============ 終端機 ============ -->
+<section id="terminal">
+  <h2><i>01</i>第一步：打開終端機</h2>
+  <p class="sub">Claude Code 住在終端機裡。第一關就是找到它——其實你的電腦本來就有。</p>
+
+  <p>終端機就是那個「黑黑的、只能打字」的視窗。看起來很硬派，但你要做的只有一件事：<strong>把 Claude Code 叫出來，然後用中文跟它講話。</strong>不用背任何指令。</p>
+
+  <div class="grid">
+    <div class="box">
+      <span class="tag"><span class="pill win">Windows</span></span>
+      <h3>用內建的 PowerShell</h3>
+      <p>按 <b>Win 鍵</b> → 直接打 <code>powershell</code> → Enter。<br>
+      或按 <b>Win + X</b> → 選「終端機」或「Windows PowerShell」。</p>
+      <p>看到一個黑底、開頭是 <code>PS C:\Users\你的名字&gt;</code> 的視窗，就對了。</p>
+    </div>
+    <div class="box">
+      <span class="tag"><span class="pill mac">macOS</span></span>
+      <h3>用內建的「終端機」</h3>
+      <p>按 <b>Command + 空白鍵</b> 叫出搜尋 → 打 <code>終端機</code> 或 <code>Terminal</code> → Enter。<br>
+      也可以從「應用程式 → 工具程式 → 終端機」打開。</p>
+      <p>看到開頭是 <code>你的名字@MacBook ~ %</code> 的視窗，就對了。</p>
+    </div>
+  </div>
+
+  <div class="box ok">
+    <span class="tag">確認一下</span>
+    <p>視窗打開後，打 <code>cd</code> 然後按 Enter——沒有跳出任何錯誤，就代表一切正常。<b>接下來所有指令都貼在這個視窗裡。</b></p>
+  </div>
+
+  <h3 style="font-size:20px; margin:36px 0 12px">用順了之後，換一個更好用的終端機</h3>
+  <p>內建的終端機一次只能看一個視窗。當你開始<strong>同時跑好幾件事</strong>——一邊做簡報、一邊改網站、一邊整理會議紀錄——你會想要一個能分頁、能分割畫面、做完會通知你的終端機。</p>
+  <p>這兩個都是<b>免費開源</b>、專門為了「跑 AI agent」設計的，差別只在作業系統：</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>作業系統</th><th>裝哪一個</th><th>它多做了什麼</th></tr></thead>
+      <tbody>
+        <tr class="hi">
+          <td class="k"><span class="pill win">Windows</span><br>wmux</td>
+          <td>github.com/amirlehmam/wmux<br><span style="color:var(--dim2)">下載 <code>wmux-x.x.x-setup.exe</code> 直接安裝</span></td>
+          <td>左側一排工作區，每個專案一個，各跑各的互不干擾；<b>右邊可以開一個瀏覽器面板</b>，AI 改網站你當場看得到。<b>我自己用的就是這個。</b></td>
+        </tr>
+        <tr>
+          <td class="k"><span class="pill mac">macOS</span><br>cmux</td>
+          <td>cmux.com/zh-TW<br><span style="color:var(--dim2)">有繁體中文官網，點「下載 Mac 版」</span></td>
+          <td>垂直分頁、分割畫面、<b>AI 做完會亮燈通知你</b>、內建瀏覽器面板、關掉重開還原上次的工作階段。</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="box warn">
+    <span class="tag">別搞混</span>
+    <p><b>wmux 只有 Windows 版，cmux 只有 macOS 版</b>（cmux 是原生 Mac App，其他平台還在排隊）。名字很像，但不是同一個東西的兩個版本，是兩個不同的專案。<b>照你的電腦選一個就好。</b></p>
+    <p>還有：這兩個都<b>不是必要的</b>。內建終端機就能跑 Claude Code。等你開始覺得「視窗切來切去很煩」再裝，不用一開始就搞。</p>
+  </div>
+
+  <div class="codewrap">
+    <span class="lbl">懶得自己研究？把這句貼給 AI</span>
+<pre>我用的是（Windows / Mac），完全不懂終端機。
+請告訴我：
+1. 怎麼打開內建的終端機
+2. 要不要裝（wmux / cmux），值不值得
+3. 如果值得，一步一步教我怎麼裝，
+   每一步都告訴我畫面上會看到什麼
+
+請用白話講，不要用專業術語。</pre>
+    <button class="copy">複製</button>
+  </div>
+</section>
+
+<hr>
+
 <!-- ============ 關於我 ============ -->
 <section id="about">
-  <h2><i>01</i>第一步：先打一段「關於我」</h2>
+  <h2><i>02</i>第二步：先打一段「關於我」</h2>
   <p class="sub">這是整件事最重要、也最多人跳過的一步。</p>
 
   <p>開檔第一件事，不是設定，是<strong>用白話打一段自我介紹</strong>。不用管格式、不用管欄位——就當你在跟一個新來的助理介紹自己，你會講什麼，就打什麼。</p>
@@ -273,7 +347,7 @@ https://superiorpdr2014-jpg.github.io/superior-agent-kit/
 
 <!-- ============ CLAUDE.md ============ -->
 <section id="claudemd">
-  <h2><i>02</i>第二步：CLAUDE.md 完整範本</h2>
+  <h2><i>03</i>第三步：CLAUDE.md 完整範本</h2>
   <p class="sub">存成 <code>CLAUDE.md</code>，放在你的專案資料夾最上層。每次開工它都會自動讀一遍。</p>
 
   <p>把上一段「關於我」貼給 AI，跟它說「照這段幫我整理成 CLAUDE.md」，它就會生出下面這種東西。你也可以直接複製這份改。</p>
@@ -349,7 +423,7 @@ https://superiorpdr2014-jpg.github.io/superior-agent-kit/
 
 <!-- ============ 安全三件套 ============ -->
 <section id="safe">
-  <h2><i>03</i>第三步：安全三件套</h2>
+  <h2><i>04</i>第四步：安全三件套</h2>
   <p class="sub">誤刪一次就知道值不值得。十分鐘，做完可以放心把速度開到最大。</p>
 
   <p>三層，缺一不可：<strong>① 刪除進資源回收筒 ② 最危險的指令直接封鎖 ③ 選對權限模式</strong>。裝了第一層不代表安全，因為 AI 可能選到別的刪除方式，所以第二層一定要有。</p>
@@ -466,7 +540,7 @@ https://superiorpdr2014-jpg.github.io/superior-agent-kit/
 
 <!-- ============ 工具 ============ -->
 <section id="tools">
-  <h2><i>04</i>第四步：給它長出手腳</h2>
+  <h2><i>05</i>第五步：給它長出手腳</h2>
   <p class="sub">大腦再強，碰不到你的東西也沒用。這一段是讓它真的能動手。</p>
 
   <p>有四條路可以讓 AI 操作你的軟體。你不需要背，只要知道有這四條，然後問它「這件事該走哪一條」。</p>
@@ -548,7 +622,7 @@ https://superiorpdr2014-jpg.github.io/superior-agent-kit/
 
 <!-- ============ 記憶 ============ -->
 <section id="memory">
-  <h2><i>05</i>第五步：讓它記得住</h2>
+  <h2><i>06</i>第六步：讓它記得住</h2>
   <p class="sub">CLAUDE.md 記的是「你是誰」，這一層記的是「發生過什麼」。</p>
 
   <p>AI 最大的問題是失憶。你這禮拜糾正過它的事，下禮拜它又犯一次。解法是<strong>把每一次糾正都變成一個檔案</strong>——一件事一個檔，另外用一份 <code>MEMORY.md</code> 當目錄，一行一條。</p>
@@ -608,7 +682,7 @@ metadata:
 
 <!-- ============ 現成任務包 ============ -->
 <section id="recipes">
-  <h2><i>06</i>現成任務包</h2>
+  <h2><i>07</i>現成任務包</h2>
   <p class="sub">設定完不知道先做什麼？從這三個開始，都是三十分鐘內看得到成果的。</p>
 
   <div class="codewrap">
@@ -767,7 +841,7 @@ metadata:
 
 <!-- ============ 常見問題 ============ -->
 <section id="faq">
-  <h2><i>07</i>大家最常問我的</h2>
+  <h2><i>08</i>大家最常問我的</h2>
   <p class="sub">例會現場被問到的問題，我先寫在這裡。</p>
 
   <div class="grid">
@@ -808,7 +882,7 @@ metadata:
 
 <!-- ============ 踩坑 ============ -->
 <section id="pitfalls">
-  <h2><i>08</i>我踩過的坑</h2>
+  <h2><i>09</i>我踩過的坑</h2>
   <p class="sub">每一條後面都有一次真實的損失。學結論就好，不用學過程。</p>
 
   <ul>
